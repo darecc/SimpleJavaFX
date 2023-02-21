@@ -17,17 +17,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OknoController implements Initializable {
     private final String FILENAME = "osoby.txt";
     @FXML
-    Button bLogin, bDodaj, bWczytaj,bZapisz;;
+    Button bLogin, bDodaj, bWczytaj, bZapisz;;
     @FXML
-    TextField tLogin;
-    @FXML
-    TextField tImie;
-    @FXML
-    TextField tNazwisko;
-    @FXML
-    TextField tTelefon;
-    @FXML
-    TextField tEmail;
+    TextField tLogin, tImie,  tNazwisko, tTelefon, tEmail;
     @FXML
     PasswordField tPassword;
     @FXML
@@ -39,13 +31,7 @@ public class OknoController implements Initializable {
     @FXML
     TableView<OsobaFx> tabOsoby;
     @FXML
-    TableColumn cImie = new TableColumn();
-    @FXML
-    TableColumn cNazwisko = new TableColumn();
-    @FXML
-    TableColumn cTelefon = new TableColumn();
-    @FXML
-    TableColumn cEmail = new TableColumn();
+    TableColumn cImie, cNazwisko, cTelefon, cEmail;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,8 +59,14 @@ public class OknoController implements Initializable {
         tabTabele.setStyle(styl1);
         bDodaj.setTooltip(new Tooltip("Dodanie nowej osoby do tabeli znajomych"));
         bZapisz.setTooltip(new Tooltip("Zapisanie listy znajomych do pliku"));
+        bWczytaj.setTooltip(new Tooltip("Wczytanie listy znajomych z pliku"));
+        bLogin.setDefaultButton(true); // do momentu zalogowania przycisk 'bLogin' jest domyślnym przyciskiem
     }
 
+    /**
+     * Logowanie do programu odblokowuje pozostałe zakładki
+     * @param actionEvent
+     */
     @FXML
     private void doLogin(ActionEvent actionEvent) {
         String login = tLogin.getText();
@@ -82,6 +74,10 @@ public class OknoController implements Initializable {
         if (login.equals("Darek") && passw.equals("1234")) {
             tabTabele.setDisable(false);
             tabWykresy.setDisable(false);
+            bLogin.setDefaultButton(false);
+        }
+        else {
+            showMessage("Nieprawidłowe dane logowania!");
         }
     }
 
@@ -119,7 +115,7 @@ public class OknoController implements Initializable {
     private void doWczytaj(ActionEvent ae) {
         boolean jest = sprawdzCzyPlikIstnieje(FILENAME);
         if (jest == false) {
-            String ret = showMessage("Nie ma pliku: " + FILENAME);
+            showMessage("Nie ma pliku: " + FILENAME);
         }
         tabOsoby.getItems().clear(); // oczyszczenie dotychczasowej zawartości tabeli
         try {
@@ -148,17 +144,15 @@ public class OknoController implements Initializable {
      * Wyświetlenie komunikatu w okienku alertu
      * @param message
      */
-    private String showMessage(String message) {
-        AtomicReference<String> msgRet = null;
+    private void showMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Komunikat");
         alert.setHeaderText("");
         alert.setContentText(message);
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
-                msgRet.set("OK");
+                System.out.println("Pressed OK");
             }
         });
-        return "OK";
     }
 }

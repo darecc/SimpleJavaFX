@@ -11,7 +11,7 @@
             <tabs>
                 <Tab fx:id="tabLogin" text="Roboczy">
                     <content>
-                        <AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="562.0">
+                        <AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="414.0" prefWidth="629.0">
                             <children>
                                         <PasswordField fx:id="tPassword" layoutX="163.0" layoutY="93.0" promptText="podaj hasło" />
                                         <Button fx:id="bLogin" layoutX="86.0" layoutY="47.0" mnemonicParsing="false" onAction="#doLogin" text="Login" />
@@ -24,7 +24,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="559.0">
                      <children>
-                        <TableView fx:id="tabOsoby" layoutX="21.0" layoutY="44.0" prefHeight="200.0" prefWidth="541.0">
+                        <TableView fx:id="tabOsoby" layoutX="21.0" layoutY="44.0" prefHeight="200.0" prefWidth="541.0" stylesheets="@main.css">
                           <columns>
                             <TableColumn fx:id="cImie" prefWidth="105.0" text="Imię" />
                             <TableColumn fx:id="cNazwisko" prefWidth="127.0" text="Nazwisko" />
