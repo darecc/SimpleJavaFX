@@ -3,17 +3,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 
 <AnchorPane prefHeight="460.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dc.OknoController">
     <children>
-        <TabPane layoutX="38.0" layoutY="16.0" prefHeight="425.0" prefWidth="536.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane fx:id="tabPane" layoutX="38.0" layoutY="16.0" prefHeight="425.0" prefWidth="536.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="6.0">
             <tabs>
                 <Tab fx:id="tabLogin" text="Roboczy">
                     <content>
                         <AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="562.0">
                             <children>
                                         <PasswordField fx:id="tPassword" layoutX="163.0" layoutY="93.0" promptText="podaj hasło" />
-                                        <Button fx:id="login" layoutX="86.0" layoutY="47.0" mnemonicParsing="false" onAction="#doLogin" text="Login" />
+                                        <Button fx:id="bLogin" layoutX="86.0" layoutY="47.0" mnemonicParsing="false" onAction="#doLogin" text="Login" />
                                         <TextField fx:id="tLogin" layoutX="163.0" layoutY="47.0" promptText="podaj swój logn" />
                             </children>
                         </AnchorPane>
@@ -21,16 +22,14 @@
                 </Tab>
                 <Tab fx:id="tabTabele" text="Tabele">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="559.0">
                      <children>
-                        <TableView fx:id="tabOsoby" layoutX="21.0" layoutY="44.0" prefHeight="200.0" prefWidth="491.0">
+                        <TableView fx:id="tabOsoby" layoutX="21.0" layoutY="44.0" prefHeight="200.0" prefWidth="541.0">
                           <columns>
-                            <TableColumn fx:id="cImie" prefWidth="75.0" text="Imię" />
-                            <TableColumn fx:id="cNazwisko" prefWidth="106.0" text="Nazwisko" />
-                            <TableColumn fx:id="cTelefon" prefWidth="92.0" text="Telefon" />
-                              <!--
-                            <TableColumn fx:id="cEmail" prefWidth="165.0" text="Email" />
-                              -->
+                            <TableColumn fx:id="cImie" prefWidth="105.0" text="Imię" />
+                            <TableColumn fx:id="cNazwisko" prefWidth="127.0" text="Nazwisko" />
+                            <TableColumn fx:id="cTelefon" prefWidth="106.0" text="Telefon" />
+                            <TableColumn fx:id="cEmail" prefWidth="167.0" text="Email" />
                           </columns>
                         </TableView>
                         <TextField fx:id="tImie" layoutX="71.0" layoutY="260.0" prefHeight="27.0" prefWidth="132.0" />
@@ -41,11 +40,31 @@
                         <TextField fx:id="tTelefon" layoutX="73.0" layoutY="314.0" prefHeight="27.0" prefWidth="130.0" />
                         <Label layoutX="221.0" layoutY="318.0" text="e-mail:" />
                         <TextField fx:id="tEmail" layoutX="289.0" layoutY="312.0" />
-                        <Button fx:id="bDodaj" layoutX="23.0" layoutY="353.0" mnemonicParsing="false" onAction="#DodajDoTabeli" prefHeight="27.0" prefWidth="133.0" text="Dodaj do tabeli" />
+                        <Button fx:id="bDodaj" layoutX="26.0" layoutY="353.0" mnemonicParsing="false" onAction="#doDodaj" prefHeight="27.0" prefWidth="159.0" text="Dodaj do tabeli" />
+                        <Label layoutX="25.0" layoutY="14.0" text="Lista znajomych:">
+                           <textFill>
+                              <LinearGradient endX="0.009615384615384581" endY="0.4471153846153846" startX="0.5913461538461539" startY="0.9278846153846154">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="0.6184210777282715" green="0.6199561357498169" blue="0.7105262875556946" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </textFill>
+                        </Label>
+                        <Button fx:id="bWczytaj" layoutX="359.0" layoutY="353.0" mnemonicParsing="false" onAction="#doWczytaj" prefHeight="27.0" prefWidth="106.0" text="Wczytaj" />
+                        <Button fx:id="bZapisz" layoutX="469.0" layoutY="353.0" mnemonicParsing="false" onAction="#doZapisz" prefHeight="27.0" prefWidth="98.0" text="Zapisz" />
                      </children></AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Wykresy">
+                <Tab fx:id="tabWykresy" text="Wykresy">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
