@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="460.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dc.OknoController">
+    <children>
+        <TabPane layoutX="38.0" layoutY="16.0" prefHeight="425.0" prefWidth="536.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="tabLogin" text="Roboczy">
+                    <content>
+                        <AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="394.0" prefWidth="562.0">
+                            <children>
+                                        <PasswordField fx:id="tPassword" layoutX="163.0" layoutY="93.0" promptText="podaj hasło" />
+                                        <Button fx:id="login" layoutX="86.0" layoutY="47.0" mnemonicParsing="false" onAction="#doLogin" text="Login" />
+                                        <TextField fx:id="tLogin" layoutX="163.0" layoutY="47.0" promptText="podaj swój logn" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabTabele" text="Tabele">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tabOsoby" layoutX="21.0" layoutY="44.0" prefHeight="200.0" prefWidth="491.0">
+                          <columns>
+                            <TableColumn fx:id="cImie" prefWidth="75.0" text="Imię" />
+                            <TableColumn fx:id="cNazwisko" prefWidth="106.0" text="Nazwisko" />
+                            <TableColumn fx:id="cTelefon" prefWidth="92.0" text="Telefon" />
+                              <!--
+                            <TableColumn fx:id="cEmail" prefWidth="165.0" text="Email" />
+                              -->
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="tImie" layoutX="71.0" layoutY="260.0" prefHeight="27.0" prefWidth="132.0" />
+                        <Label layoutX="26.0" layoutY="264.0" text="Imię:" />
+                        <Label layoutX="220.0" layoutY="264.0" text="Nazwisko:" />
+                        <TextField fx:id="tNazwisko" layoutX="288.0" layoutY="259.0" />
+                        <Label layoutX="25.0" layoutY="318.0" text="Telefon" />
+                        <TextField fx:id="tTelefon" layoutX="73.0" layoutY="314.0" prefHeight="27.0" prefWidth="130.0" />
+                        <Label layoutX="221.0" layoutY="318.0" text="e-mail:" />
+                        <TextField fx:id="tEmail" layoutX="289.0" layoutY="312.0" />
+                        <Button fx:id="bDodaj" layoutX="23.0" layoutY="353.0" mnemonicParsing="false" onAction="#DodajDoTabeli" prefHeight="27.0" prefWidth="133.0" text="Dodaj do tabeli" />
+                     </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Wykresy">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="image" fitHeight="172.0" fitWidth="223.0" layoutX="36.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true" />
+                     </children></AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>
