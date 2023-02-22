@@ -1,42 +1,61 @@
 package dc;
 
+import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class OknoController implements Initializable {
     private final String FILENAME = "osoby.txt";
+    private Random rnd;
+    final FileChooser fileChooser = new FileChooser();
     @FXML
-    Button bLogin, bDodaj, bWczytaj, bZapisz;;
+    Button bLogin, bDodaj, bWczytaj, bZapisz, bSelect, bFoto, bRysuj;
     @FXML
     TextField tLogin, tImie,  tNazwisko, tTelefon, tEmail;
     @FXML
     PasswordField tPassword;
     @FXML
-    AnchorPane anchorPane;
+    AnchorPane anchorPane, paneRysuj;
     @FXML
-    Tab tabTabele, tabWykresy;
+    Tab tabTabele, tabFotki, tabRysuj;
     @FXML
-    ImageView image;
+    ImageView imageView;
     @FXML
     TableView<OsobaFx> tabOsoby;
     @FXML
     TableColumn cImie, cNazwisko, cTelefon, cEmail;
+    @FXML
+    Slider cOpacity;
+    @FXML
+    public Group grupa = new Group();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tabTabele.setDisable(true);
-        tabWykresy.setDisable(true);
+        tabFotki.setDisable(true);
         cImie.setCellValueFactory(new PropertyValueFactory<OsobaFx, String>("Imie"));
         cNazwisko.setCellValueFactory(new PropertyValueFactory<OsobaFx, String>("Nazwisko"));
         cTelefon.setCellValueFactory(new PropertyValueFactory<OsobaFx, String>("Telefon"));
@@ -44,7 +63,7 @@ public class OknoController implements Initializable {
         //region stylizacja kontrolek
         String styl1 = "-fx-background-color: #D7BCC9; -fx-color: #EE7C00; -fx-margin: 10px;";
         String styl2 = "-fx-background-color: #D78CA9; -fx-color: #33ACBB; -fx-margin: 10px;";
-        String styl3 = "-fx-background-color: #3c7fb1,\n" +
+        String styl3 = "-fx-background-color: #3c0fb1,\n" +
                 "        linear-gradient(#fafdfe, #e8f5fc),\n" +
                 "        linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);\n" +
                 "    -fx-background-insets: 0,1,2;\n" +
@@ -57,9 +76,14 @@ public class OknoController implements Initializable {
         bWczytaj.setStyle(styl3);
         bZapisz.setStyle(styl3);
         tabTabele.setStyle(styl1);
+        bRysuj.setStyle(styl3);
         bDodaj.setTooltip(new Tooltip("Dodanie nowej osoby do tabeli znajomych"));
         bZapisz.setTooltip(new Tooltip("Zapisanie listy znajomych do pliku"));
         bWczytaj.setTooltip(new Tooltip("Wczytanie listy znajomych z pliku"));
+        bSelect.setTooltip(new Tooltip("Dialog umożliwiający wybór pliku graficznego"));
+        bRysuj.setTooltip(new Tooltip("Rysowanie magicznych kółek ;)"));
+        bSelect.setStyle("-fx-border-color:Gold;-fx-border-width:2px;");
+        bFoto.setStyle("-fx-border-color:Gold;-fx-border-width:2px;");
         bLogin.setDefaultButton(true); // do momentu zalogowania przycisk 'bLogin' jest domyślnym przyciskiem
     }
 
@@ -73,7 +97,7 @@ public class OknoController implements Initializable {
         String passw = tPassword.getText();
         if (login.equals("Darek") && passw.equals("1234")) {
             tabTabele.setDisable(false);
-            tabWykresy.setDisable(false);
+            tabFotki.setDisable(false);
             bLogin.setDefaultButton(false);
         }
         else {
@@ -97,6 +121,10 @@ public class OknoController implements Initializable {
      */
     @FXML
     private void doZapisz(ActionEvent ae) {
+        if (tabOsoby.getItems().isEmpty()) {
+            showMessage("W tabeli nie ma znajomych do zapisania...");
+            return;
+        }
         try {
             FileWriter fw = new FileWriter(FILENAME);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -154,5 +182,107 @@ public class OknoController implements Initializable {
                 System.out.println("Pressed OK");
             }
         });
+    }
+
+    @FXML
+    private void onSelectFoto(ActionEvent ae) {
+        File file = new File("images/szybowanie.jpg");
+        Image im = new Image(file.toURI().toString());
+        imageView.setImage(im);
+    }
+
+    @FXML
+    private void onSelectImage(ActionEvent ae) {
+            final String[] pliki = {null};
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("JPG", "*.jpg")
+                    ,new FileChooser.ExtensionFilter("PNG", "*.png")
+            );
+            final Stage dialog = new Stage();
+            dialog.setTitle("Wybór pliku");
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            AnchorPane panel = new AnchorPane();
+            String styl = "-fx-background-color: #E7BCC9; -fx-color: EE000C;";
+            panel.setStyle(styl);
+            Label etykieta = new Label("Wybór pliku do wczytania: ");
+            etykieta.setLayoutX(70);
+            etykieta.setLayoutY(20);
+            Button button1 = new Button("Wybierz");
+            button1.setLayoutX(110);
+            button1.setLayoutY(50);
+            button1.setMinSize(40, 25);
+            button1.setOnAction(ev -> {
+                File selectedFile = fileChooser.showOpenDialog(dialog);
+                if (selectedFile != null) {
+                    System.out.println(selectedFile.toString());
+                    pliki[0] = selectedFile.toString();
+                    dialog.close();
+                }
+                else
+                    System.out.println("Nie nie wybrano");
+            });
+            panel.getChildren().addAll(etykieta, button1);
+            Scene scene1 = new Scene(panel, 300, 250);
+            dialog.setScene(scene1);
+            dialog.showAndWait();
+            dialog.close();
+            panel.getChildren().remove(etykieta);
+            panel.getChildren().remove(button1);
+            // wczytanie pliku do 'imageView'
+            String fileN = pliki[0];
+            File file = new File(fileN);
+            Image im = new Image(file.toURI().toString());
+            imageView.setImage(im);
+            grupa = new Group();
+            paneRysuj.getChildren().add(grupa);
+        }
+
+    /**
+     * Zmiana przezroczystości
+      * @param e
+     */
+    @FXML
+    private void onDrag(Event e) {
+        double opacity = cOpacity.getValue() /100;
+        System.out.println("Opacity: " + opacity);
+        FadeTransition ftrans = new FadeTransition();
+        ftrans.setNode(imageView);
+        ftrans.setFromValue(opacity);
+        ftrans.setToValue(opacity);
+        ftrans.play();
+    }
+
+    /**
+     * Przycisk bRysuj uruchamia malowanie "magicznych" kółek
+     * @param e
+     */
+    @FXML
+    private void onRysuj(Event e) {
+        paneRysuj.getChildren().remove(grupa);
+        grupa = new Group();
+        paneRysuj.getChildren().add(grupa);
+        rnd = new Random(LocalDateTime.now().getNano());
+        namalujKolka(grupa, 300, 180, 86);
+    }
+
+    /**
+     * Maolwanie kółek
+     * @param grupa
+     * @param x
+     * @param y
+     * @param r
+     */
+    private void namalujKolka(Group grupa, int x, int y, int r) {
+        Circle kolko = new Circle(x , y, r, Color.rgb(0 + rnd.nextInt(70),60 + rnd.nextInt(70),10 + rnd.nextInt(70),0.3 + rnd.nextDouble() / 3));
+        kolko.setStroke(Color.BLACK);
+        grupa.getChildren().add(kolko);
+
+        if (r > 12) {
+            namalujKolka(grupa, x + r, y, r / 2);
+            namalujKolka(grupa, x - r, y, r / 2);
+            namalujKolka(grupa, x - (int)(1.9 * r), y + r, r / 2);
+            namalujKolka(grupa, x + (int)(2.0 * r), y - r, r / 2);
+        }
     }
 }

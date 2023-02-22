@@ -1,2 +1,3 @@
-Adam;Nowak;601234543;adam.nowak@gmail.com
-Joanna;Nowicka;505505666;joanna2222@onet.pl
+Ala;Owoc;123456;owoc@wp.pl
+Jan;Nowak;601234050;jan.nowak@gmail.com
+Anna;Kostiuk;504504506;kostiuk@onet.pl
