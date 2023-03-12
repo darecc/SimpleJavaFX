@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane prefHeight="460.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dc.OknoController">
+<AnchorPane prefHeight="460.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dc.OknoController">
     <children>
         <TabPane fx:id="tabPane" layoutX="38.0" layoutY="16.0" prefHeight="425.0" prefWidth="536.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="6.0">
             <tabs>
@@ -31,6 +31,15 @@
                             <TableColumn fx:id="cTelefon" prefWidth="106.0" text="Telefon" />
                             <TableColumn fx:id="cEmail" prefWidth="167.0" text="Email" />
                           </columns>
+                            <contextMenu>
+                                <ContextMenu fx:id="tableMenu">
+                                    <items>
+                                        <MenuItem text="Remove" onAction="#removeContact"/>
+                                        <MenuItem text="Edit"/>
+                                        <MenuItem text="..."/>
+                                    </items>
+                                </ContextMenu>
+                            </contextMenu>
                         </TableView>
                         <TextField fx:id="tImie" layoutX="71.0" layoutY="260.0" prefHeight="27.0" prefWidth="132.0" style="-fx-border-width: 2px;;" styleClass="style1" stylesheets="@main.css" />
                         <Label layoutX="26.0" layoutY="264.0" text="Imię:" />
@@ -68,7 +77,10 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="414.0" prefWidth="620.0">
                      <children>
-                        <ImageView fx:id="imageView" fitHeight="357.0" fitWidth="586.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" AnchorPane.bottomAnchor="42.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0" />
+                        <ImageView fx:id="imageView" fitHeight="357.0" fitWidth="586.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" AnchorPane.bottomAnchor="42.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
+                           <image>
+                              <Image url="@Luboń.jpg" />
+                           </image></ImageView>
                         <Button fx:id="bFoto" layoutX="496.0" layoutY="379.0" mnemonicParsing="false" onAction="#onSelectFoto" prefHeight="27.0" prefWidth="111.0" text="Czapla" />
                         <Button fx:id="bSelect" layoutX="345.0" layoutY="379.0" mnemonicParsing="false" onAction="#onSelectImage" prefHeight="27.0" prefWidth="125.0" text="Wybierz plik" />
                         <Slider fx:id="cOpacity" layoutX="144.0" layoutY="385.0" onDragDetected="#onDrag" prefHeight="16.0" prefWidth="160.0" value="100.0" />

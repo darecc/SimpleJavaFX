@@ -35,10 +35,13 @@ public class OsobaFx {
         public String getTelefon() {
             return telefon.get();
         }
-        public void setTelefon(String telefon) { this.telefon.set(telefon); }
+        public void setTelefon(String telefon) {
+            if (telefon.startsWith("6") || telefon.startsWith("5"))
+            this.telefon.set(telefon);
+        }
         @Override
         public String toString() {
-            return imie + " " + nazwisko + " (" + telefon + ")";
+            return imie.get() + " " + nazwisko.get() + " (" + telefon.get() + ")";
         }
 
     public String getEmail() {
@@ -50,7 +53,8 @@ public class OsobaFx {
     }
 
     public void setEmail(String email) {
-        this.email.set(email);
+        if (email.contains("@") && email.contains("."))
+            this.email.set(email);
     }
 }
 

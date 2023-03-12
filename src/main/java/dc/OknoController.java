@@ -1,5 +1,6 @@
 package dc;
 
+import com.google.gson.Gson;
 import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -24,6 +25,8 @@ import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -32,26 +35,53 @@ public class OknoController implements Initializable {
     private Random rnd;
     final FileChooser fileChooser = new FileChooser();
     @FXML
-    Button bLogin, bDodaj, bWczytaj, bZapisz, bSelect, bFoto, bRysuj;
+    Button bLogin = new Button();
     @FXML
-    TextField tLogin, tImie,  tNazwisko, tTelefon, tEmail;
+    Button bDodaj = new Button();
     @FXML
-    PasswordField tPassword;
+    Button bWczytaj = new Button();
+    @FXML
+    Button bZapisz = new Button();
+    @FXML
+    Button bSelect = new Button();
+    @FXML
+    Button bFoto = new Button();
+    @FXML
+    Button bRysuj = new Button();
+    @FXML
+    TextField tImie = new TextField();
+    @FXML
+    TextField tLogin = new TextField();
+    @FXML
+    TextField tNazwisko, tTelefon, tEmail;
+    @FXML
+    PasswordField tPassword = new PasswordField();
     @FXML
     AnchorPane anchorPane, paneRysuj;
     @FXML
-    Tab tabTabele, tabFotki, tabRysuj;
+    Tab tabTabele = new Tab();
+    @FXML
+    Tab tabFotki = new Tab();
+    @FXML
+    Tab tabRysuj;
     @FXML
     ImageView imageView;
     @FXML
     TableView<OsobaFx> tabOsoby;
     @FXML
-    TableColumn cImie, cNazwisko, cTelefon, cEmail;
+    TableColumn cImie = new TableColumn();
+    @FXML
+    TableColumn cNazwisko = new TableColumn();
+    @FXML
+    TableColumn cTelefon = new TableColumn();
+    @FXML
+    TableColumn cEmail = new TableColumn();
     @FXML
     Slider cOpacity;
     @FXML
     public Group grupa = new Group();
-
+    @FXML
+    ContextMenu tableMenu;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tabTabele.setDisable(true);
@@ -95,7 +125,7 @@ public class OknoController implements Initializable {
     private void doLogin(ActionEvent actionEvent) {
         String login = tLogin.getText();
         String passw = tPassword.getText();
-        if (login.equals("Darek") && passw.equals("1234")) {
+        if (isPasswordValid(login, passw) == true) {
             tabTabele.setDisable(false);
             tabFotki.setDisable(false);
             bLogin.setDefaultButton(false);
@@ -103,6 +133,39 @@ public class OknoController implements Initializable {
         else {
             showMessage("Nieprawidłowe dane logowania!");
         }
+    }
+
+    public boolean isPasswordValid(String login, String passw) {
+        Map<String,String> mapa = readPasswords();
+        if (mapa.containsKey(login)) {
+            String log = mapa.get(login);
+            if (log.equals(passw))
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+    private Map<String,String> readPasswords() {
+        Map<String, String> mapa = new HashMap<>();
+        try {
+            FileReader fr = new FileReader("src/main/resources/dc/passwords.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while((line = br.readLine()) != null) {
+                String[] split = line.split(";");
+                mapa.put(split[0],split[1]);
+            }
+            br.close();
+            fr.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+        return mapa;
     }
 
     @FXML
@@ -121,6 +184,7 @@ public class OknoController implements Initializable {
      */
     @FXML
     private void doZapisz(ActionEvent ae) {
+        Gson js = new Gson();
         if (tabOsoby.getItems().isEmpty()) {
             showMessage("W tabeli nie ma znajomych do zapisania...");
             return;
@@ -284,5 +348,38 @@ public class OknoController implements Initializable {
             namalujKolka(grupa, x - (int)(1.9 * r), y + r, r / 2);
             namalujKolka(grupa, x + (int)(2.0 * r), y - r, r / 2);
         }
+    }
+    @FXML
+    private void removeContact(ActionEvent ae) {
+        var contact = tabOsoby.selectionModelProperty().get().getSelectedItem();
+        if (contact == null) {
+            showMessage("Zaznacz coś!");
+            return;
+        }
+        tabOsoby.getItems().remove(contact);
+        showMessage("Usunięto: " + contact.getImie() + "." + contact.getNazwisko());
+    }
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    /**
+     * Metoda zwraca godzinę i minuty i sekundy w formacie HH:MM;SS np. 17:05:32, 7:00:05
+     * @param ldt
+     * @return
+     */
+    public String getHoursAndMinutesAndSeconds(LocalDateTime ldt) {
+        int h = ldt.getHour();
+        int m = ldt.getMinute();
+        int s = ldt.getSecond();
+        String text = "" + h + ":";
+        if (m < 10)
+            text += "0";
+        text += m + ":";
+        if (s < 10)
+            text += "0";
+        text += s;
+        return text;
     }
 }
