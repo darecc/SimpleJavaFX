@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -22,6 +23,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +32,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class OknoController implements Initializable {
     private final String FILENAME = "osoby.txt";
@@ -82,6 +88,14 @@ public class OknoController implements Initializable {
     public Group grupa = new Group();
     @FXML
     ContextMenu tableMenu;
+    //@FXML
+    //MediaView film;
+    @FXML
+    Button playButton, pauseButton, resetButton;
+    @FXML
+    MediaView mediaView;
+    @FXML
+    MediaPlayer mediaPlayer;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tabTabele.setDisable(true);
@@ -115,6 +129,29 @@ public class OknoController implements Initializable {
         bSelect.setStyle("-fx-border-color:Gold;-fx-border-width:2px;");
         bFoto.setStyle("-fx-border-color:Gold;-fx-border-width:2px;");
         bLogin.setDefaultButton(true); // do momentu zalogowania przycisk 'bLogin' jest domyślnym przyciskiem
+        //region zainicjowanie media playera
+        //File file = new File("src/main/resources/dc/video/putin.mp4");
+        URL url = null;
+        try {
+            //url = new URL("https://youtube.com/shorts/MLobv-aOYrM");
+            //url = new URL("https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1");
+            url = new URL("https://assets.codepen.io/6093409/river.mp4");
+            //url = new URL("https://download.oracle.com/otndocs/products/javafx/oow2010-2.flv ");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        String URI = null;
+        try {
+            URI = url.toURI().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        Media m = new Media(URI);
+        mediaPlayer = new MediaPlayer(m);
+        playButton.setStyle(styl3);
+        pauseButton.setStyle(styl3);
+        resetButton.setStyle(styl3);
+        //endregion
     }
 
     /**
@@ -381,5 +418,23 @@ public class OknoController implements Initializable {
             text += "0";
         text += s;
         return text;
+    }
+
+    @FXML
+    public void doPlay(ActionEvent ae) {
+        mediaPlayer.setVolume(50);
+        mediaView.setMediaPlayer(mediaPlayer);
+        mediaPlayer.play();
+    }
+
+    @FXML
+    public void doPause(Event e) {
+        mediaPlayer.pause();
+    }
+
+    @FXML
+    public void doReset(Event ev) {
+        mediaPlayer.seek(Duration.seconds(0.0));
+        mediaPlayer.stop();
     }
 }

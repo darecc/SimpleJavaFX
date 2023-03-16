@@ -76,6 +76,11 @@
             <artifactId>jfx-testrunner</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>11.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

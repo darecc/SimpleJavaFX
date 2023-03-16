@@ -3,9 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.media.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane prefHeight="460.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dc.OknoController">
+<AnchorPane prefHeight="460.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dc.OknoController">
     <children>
         <TabPane fx:id="tabPane" layoutX="38.0" layoutY="16.0" prefHeight="425.0" prefWidth="536.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="6.0">
             <tabs>
@@ -34,9 +35,9 @@
                             <contextMenu>
                                 <ContextMenu fx:id="tableMenu">
                                     <items>
-                                        <MenuItem text="Remove" onAction="#removeContact"/>
-                                        <MenuItem text="Edit"/>
-                                        <MenuItem text="..."/>
+                                        <MenuItem onAction="#removeContact" text="Remove" />
+                                        <MenuItem text="Edit" />
+                                        <MenuItem text="..." />
                                     </items>
                                 </ContextMenu>
                             </contextMenu>
@@ -71,6 +72,18 @@
                         <Button fx:id="bWczytaj" layoutX="359.0" layoutY="353.0" mnemonicParsing="false" onAction="#doWczytaj" prefHeight="27.0" prefWidth="106.0" text="Wczytaj" />
                         <Button fx:id="bZapisz" layoutX="469.0" layoutY="353.0" mnemonicParsing="false" onAction="#doZapisz" prefHeight="27.0" prefWidth="98.0" style="-fx-border-color: AliceBlue;" text="Zapisz" />
                      </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="media" text="Media">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="414.0" prefWidth="620.0">
+                     <children>
+                        <Button fx:id="playButton" layoutX="36.0" layoutY="375.0" mnemonicParsing="false" onAction="#doPlay" prefHeight="27.0" prefWidth="83.0" text="Play" AnchorPane.rightAnchor="496.0" />
+                        <MediaView fx:id="mediaView" fitHeight="350.0" fitWidth="512.0" layoutX="16.0" layoutY="20.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="87.0" AnchorPane.topAnchor="20.0" />
+                        <Button fx:id="pauseButton" layoutX="144.0" layoutY="375.0" mnemonicParsing="false" onAction="#doPause" prefHeight="27.0" prefWidth="82.0" text="Pause" AnchorPane.rightAnchor="389.0" />
+                        <Button fx:id="resetButton" layoutX="248.0" layoutY="375.0" mnemonicParsing="false" onAction="#doReset" prefHeight="27.0" prefWidth="78.0" text="Reset" AnchorPane.rightAnchor="289.0" />
+                     </children>
+                        </AnchorPane>
                     </content>
                 </Tab>
                 <Tab fx:id="tabFotki" text="Zdjęcia">
