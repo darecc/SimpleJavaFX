@@ -3,10 +3,16 @@ package dc;
 import com.google.gson.Gson;
 import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
@@ -28,10 +34,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -54,6 +58,14 @@ public class OknoController implements Initializable {
     Button bFoto = new Button();
     @FXML
     Button bRysuj = new Button();
+    @FXML
+    Button bList = new Button();
+    @FXML
+    Button newWindow;
+    @FXML
+    Button newVideo;
+    @FXML
+    ListView lista;
     @FXML
     TextField tImie = new TextField();
     @FXML
@@ -96,7 +108,9 @@ public class OknoController implements Initializable {
     MediaView mediaView;
     @FXML
     MediaPlayer mediaPlayer;
-    @Override
+    @FXML
+    public static final ObservableList data =
+            FXCollections.observableArrayList();
     public void initialize(URL location, ResourceBundle resources) {
         tabTabele.setDisable(true);
         tabFotki.setDisable(true);
@@ -151,6 +165,14 @@ public class OknoController implements Initializable {
         playButton.setStyle(styl3);
         pauseButton.setStyle(styl3);
         resetButton.setStyle(styl3);
+        //endregion
+        //region List view selected item listener
+        lista.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object old, Object newValue) {
+               showMessage("Wybrane: " + observableValue.getValue());
+            }
+        });
         //endregion
     }
 
@@ -436,5 +458,69 @@ public class OknoController implements Initializable {
     public void doReset(Event ev) {
         mediaPlayer.seek(Duration.seconds(0.0));
         mediaPlayer.stop();
+    }
+
+    @FXML
+    private void onLista(Event ev) {
+        //źródło: https://mamotoja.pl/rodzina/imiona/elfickie-imiona-meskie-zenskie-znaczenie-38056-r1/
+       String[] imionaElfow = new String[] {"Aafje", "Alfdís", "Alfiva", "Alruna", "Elladan", "Elrohir", "Aelfraed", "Idril", "Ithil", "Mithrandir", "Ingálvur", "Noralf", "Joralf", "Aveley", "Gunnalf"};
+       int i = 0;
+       for (String st : imionaElfow) {
+           data.add(i++, st);
+       }
+       lista.setItems(data);
+    }
+
+    @FXML
+    private void onNewVideo(Event ev) {
+        File file = new File("src/main/resources/dc/video/putin.mp4");
+        URL url = null;
+        try {
+            //url = new URL("https://www.youtube.com/embed/P_tAU3GM9XI?autoplay=1");
+            url = new URL(file.toURI().toString());
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+        }
+        String URI = null;
+        try {
+            URI = url.toURI().toString();
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
+        }
+        Media m = new Media(URI);
+        mediaPlayer = new MediaPlayer(m);
+    }
+
+    /**
+     * Okienko z przekazaniem danych (patrz: https://dev.to/devtony101/javafx-3-ways-of-passing-information-between-scenes-1bm8, oraz: https://www.tabnine.com/code/java/methods/javafx.fxml.FXMLLoader/setLocation
+     * Jakoś to połączyłem ;)
+     * @param ev
+     */
+    @FXML
+    public void onNewWindow(Event ev) {
+        try {
+            Node node = (Node) ev.getSource();
+            // Step 3
+            //Stage stage = (Stage) node.getScene().getWindow();
+            //stage.close();
+            // Step 4
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("okienko.fxml"));
+            // Step 5
+            //stage.setUserData("ala");
+            OkienkoController oc = new OkienkoController();
+            loader.setController(oc);
+            oc.setData("Ala ma psa");
+            oc = loader.getController();
+            loader.setLocation(Application.class.getResource("okienko.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            String napis = oc.getData();
+            showMessage("Napis: " + napis);
+        } catch (IOException e) {
+            System.err.println(String.format("Error: %s", e.getMessage()));
+        }
     }
 }

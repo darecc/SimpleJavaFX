@@ -82,6 +82,7 @@
                         <MediaView fx:id="mediaView" fitHeight="350.0" fitWidth="512.0" layoutX="16.0" layoutY="20.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="87.0" AnchorPane.topAnchor="20.0" />
                         <Button fx:id="pauseButton" layoutX="144.0" layoutY="375.0" mnemonicParsing="false" onAction="#doPause" prefHeight="27.0" prefWidth="82.0" text="Pause" AnchorPane.rightAnchor="389.0" />
                         <Button fx:id="resetButton" layoutX="248.0" layoutY="375.0" mnemonicParsing="false" onAction="#doReset" prefHeight="27.0" prefWidth="78.0" text="Reset" AnchorPane.rightAnchor="289.0" />
+                        <Button fx:id="newVideo" layoutX="370.0" layoutY="375.0" mnemonicParsing="false" onAction="#onNewVideo" text="New video" />
                      </children>
                         </AnchorPane>
                     </content>
@@ -108,6 +109,26 @@
                      <children>
                         <Button fx:id="bRysuj" layoutX="493.0" layoutY="362.0" mnemonicParsing="false" onAction="#onRysuj" prefHeight="27.0" prefWidth="99.0" text="Rysuj" />
                      </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabList" text="Lista">
+                    <content>
+                        <AnchorPane fx:id="paneLista" prefHeight="200.0" prefWidth="200.0">
+                            <children>
+                                <Button fx:id="bLista" layoutX="493.0" layoutY="362.0" mnemonicParsing="false" onAction="#onLista" prefHeight="27.0" prefWidth="99.0" text="Lista" />
+                                <ListView fx:id="lista" layoutX="68.0" layoutY="31.0" prefHeight="332.0" prefWidth="200.0" />
+                                <Label layoutX="308.0" layoutY="51.0" text="Imiona elfów z &quot;Władców Pierścieni&quot;" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabWindow" text="Okienko z dialogiem">
+                    <content>
+                        <AnchorPane fx:id="paneWindow" prefHeight="200.0" prefWidth="200.0">
+                            <children>
+                                <Button fx:id="newWindow" layoutX="493.0" layoutY="317.0" mnemonicParsing="false" onAction="#onNewWindow" text="New window" />
+                            </children>
+                        </AnchorPane>
                     </content>
                 </Tab>
             </tabs>
